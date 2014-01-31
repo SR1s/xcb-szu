@@ -1,0 +1,241 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>深圳大学-党委宣传部</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link href='{{ url_for("static", filename="css/css.css") }}' rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src='{{ url_for("static", filename="js/jquery-1.7.2.min.js") }}'></script>
+        <script type="text/javascript" src='{{ url_for("static", filename="js/jquery.KinSlideshow-1.2.1.min.js") }}'></script>
+        <script type="text/javascript" src='{{ url_for("static", filename="js/datePick.js") }}'></script>
+    </head>
+    <script type="text/javascript">
+    $(function(){
+        //幻灯片 （插件）
+        $("#slider").KinSlideshow({
+            titleBar:{titleBar_height:18,titleBar_bgColor:"#8C0A41",titleBar_alpha:0.5},
+            titleFont:{TitleFont_size:12,TitleFont_color:"#FFFFFF",TitleFont_weight:"normal"},
+            btn:{btn_bgColor:"#FFFFFF",btn_bgHoverColor:"#1072aa",btn_fontColor:"#000000",
+                btn_fontHoverColor:"#FFFFFF",btn_borderColor:"#cccccc",
+                btn_borderHoverColor:"#1188c0",btn_borderWidth:0}
+        });
+    });
+    function AutoResizeImage(maxWidth,maxHeight,objImg){
+        var img = new Image();
+        img.src = objImg.src;
+        var hRatio;
+        var wRatio;
+        var Ratio = 1;
+        var w = img.width;
+        var h = img.height;
+        wRatio = maxWidth / w;
+        hRatio = maxHeight / h;
+        if (maxWidth ==0 && maxHeight==0){
+            Ratio = 1;
+        }else if (maxWidth==0){//
+            if (hRatio<1) Ratio = hRatio;
+        }else if (maxHeight==0){
+            if (wRatio<1) Ratio = wRatio;
+        }else if (wRatio<1 || hRatio<1){
+            Ratio = (wRatio<=hRatio?wRatio:hRatio);
+        }
+        if (Ratio<1){
+            w = w * Ratio;
+            h = h * Ratio;
+        }
+        objImg.height = h;
+        objImg.width = w;
+    }
+    </script>
+    <body>
+        <div id="header">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td width="364" height="73" align="left" valign="top" style="background-color:#8C0A41; background-image:url({{ url_for('static', filename='images/rounded-orange.gif') }}); background-position:bottom left; background-repeat:no-repeat;">
+                        <img src="{{ url_for('static', filename='images/top2.jpg') }}" />
+                    </td>
+                    <td>
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td>
+                                    <img width="344px" height="65px" src="{{ url_for('static', filename='images/logo.jpg') }}" />
+                                </td>
+                                <form method="get" name="myform" action="http://keylands.com/xcb/typeSearch.asp">
+                                    <td valign="middle" align="right">
+                                        <!--<select name="type" style="margin:0">
+                                            <option value="按标题">按标题</option>
+                                            <option value="按内容">按内容</option>
+                                        </select>
+                                        <input type="text" name="word" size="12">
+                                        <input type="submit" name="Submit" value="搜索">-->
+                                    </td>
+                                </form>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div id="bodyer">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td align="left" width="364" valign="top"></td>
+                    <td style="padding:10px 0 3px 12px; font-size:9pt; background-position:top right; background-repeat:no-repeat; background-color:#8C0A41"></td>
+                </tr>
+            </table>
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+               <tr>
+                   <td width="145" valign="top" title="364">
+                        <div id="navalpha"> 
+                            <ul>
+                                <li>
+                                    <a class="now" href="index-2.html">网站首页</a>
+                                </li>
+                                <li>
+                                    <a href="typeABC7cc4.html?typeID=32&amp;nowP=%C0%ED%C2%DB%D1%A7%CF%B0">理论学习</a>
+                                </li>
+                                <li>
+                                    <a href="typeABC6a24.html?typeID=30&amp;nowP=%D0%A3%D4%B0%D0%C2%CE%C5">校园新闻</a>
+                                </li>
+                                <li>
+                                    <a href="typeABCfe89.html?typeID=14&amp;nowP=%D4%BA%CF%B5%B6%AF%CC%AC">院系动态</a>
+                                </li>
+                                <li>
+                                    <a href="typeABC0be0.html?typeID=33&amp;nowP=%BB%FA%B9%B9%C9%E8%D6%C3">机构设置</a>
+                                </li>
+                                <li>
+                                    <a href="typeABCa57a.html?typeID=23&amp;nowP=%C3%BD%CC%E5%C9%EE%B4%F3">媒体深大</a>
+                                </li>
+                                <li>
+                                    <a href="typeABC7efb.html?typeID=24&amp;nowP=%A1%B6%C9%EE%DB%DA%B4%F3%D1%A7%B1%A8%A1%B7">《深圳大学报》</a>
+                                </li>
+                                <li>
+                                    <a href="typeABCaf5a.html?typeID=37&amp;nowP=%C9%EE%DB%DA%B4%F3%D1%A7%B9%E3%B2%A5%D5%BE">深圳大学广播站</a>
+                                </li>
+                                <li>
+                                    <a href="typeABCf931.html?typeID=42&amp;nowP=%C9%EE%B4%F3%B7%E7%B9%E2">深大风光</a>
+                                </li>
+                                <li>
+                                    <a href="typeABCa845.html?typeID=43&amp;nowP=%D3%D1%C7%E9%C1%AC%BD%D3">友情连接</a></li>
+                                <li>
+                                    <a  href="typeABC52d4.html?typeID=41&amp;nowP=%CD%F8%C9%CF%B0%EC%B9%AB">网上办公</a>
+                                    <ul id="none">
+                                        <li class="normal">
+                                            <a href="">校外新闻报道申请</a>
+                                        </li>
+                                        <li class="normal">
+                                            <a href="">校内新闻报道申请</a>
+                                        </li>
+                                        <li class="normal">
+                                            <a href="">宣传品审批</a>
+                                        </li>
+                                        <li class="normal">
+                                            <a href="">网上投稿</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td width="15"></td>
+                    <td width="189" valign="top">
+                        <div id="home">
+                        <h2>
+                            <a href="#"><span>校园新闻</span></a>
+                        </h2>
+                        <ul>
+                            <li>
+                                <a href="typed33d.html?cID=658" title="我校大学生志愿者积极参加市节水宣传活动">我校大学生志愿者积极参加市节水宣传活动</a>
+                            </li>
+                            <li>
+                                <a href="typefa0b.html?cID=657" title="李清泉校长与我校共青团干部座谈">                李清泉校长与我校共青团干部座谈</a>
+                            </li>
+                            <li>
+                                <a href="type4079.html?cID=656" title="深大义工联合会换届暨志愿者工作中心揭牌仪式举行">深大义工联合会换届暨志愿者工作中心揭牌仪式举行</a>
+                            </li>
+                            <li>
+                                <a href="typeaf28.html?cID=655" title="管理学院读书月开幕 李清泉与学子畅谈深大发展">管理学院读书月开幕 李清泉与学子畅谈深大发展</a>
+                            </li>
+                            <li>
+                                <a href="type.asp?cID=654" title="校领导会见澳大利亚麦考理大学代表">校领导会见澳大利亚麦考理大学代表</a>
+                            </li>
+                            <!--<li class="more"><a href="type.asp?typeid=14&bigclassid=131&showType=%C1%D0%B1%ED">更多…</a>
+                            </li>-->
+                        </ul>
+                        <h2>
+                            <a href="#"><span>院系动态</span></a>
+                        </h2>
+                        <ul>            
+                            <li>
+                                <a href="type6a1f.html?cID=636" title="山西原平发生盗采煤矿案 5人窒息死亡">山西原平发生盗采煤矿案 5人窒息死亡</a>
+                            </li>
+                            <li>
+                                <a href="type1eb4.html?cID=635" title="欧盟对中国输欧光面纸发起反倾销调查">欧盟对中国输欧光面纸发起反倾销调查</a>
+                            </li>
+                            <li>
+                                <a href="typeb463.html?cID=634" title="欧盟对中国输欧光面纸发起反倾销调查">欧盟对中国输欧光面纸发起反倾销调查</a>
+                            </li>
+                            <li>
+                                <a href="type0f70.html?cID=633" title="美报称谷歌遭攻击源自中国两学校 校方否认">美报称谷歌遭攻击源自中国两学校 校方否认</a>
+                            </li>
+                            <!--<li class="more"><a href="type.asp?typeid=14&bigclassid=131&showType=%C1%D0%B1%ED">更多…</a></li>-->
+                        </ul>
+                    </td>
+                    <td width="15"></td>
+                    <td valign="top">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td>
+                                <div id="slider" style="visibility:hidden;">
+                                    <a href="http://www.szu.edu.cn/board/view.asp?id=250736" target="_blank" class="index-pic-a">
+                                        <img src="{{ url_for('static', filename='tmp/112311656.gif') }}" width="596px" height="300px" alt="李清泉校长会见都柏林大学代表团" />
+                                    </a>
+                                    <a href="http://www.szu.edu.cn/2013/news/2034.html" target="_blank" class="index-pic-a">
+                                        <img src="{{ url_for('static', filename='tmp/20121106125926323.jpg') }}" width="596px" height="300px" alt="两院院士李德仁开“深大讲坛”首讲——论智慧城市" />
+                                    </a>
+                                    <a href="http://www.szu.edu.cn/2013/news/2067.html" target="_blank" class="index-pic-a">
+                                        <img src="{{ url_for('static', filename='tmp/20121120164850718.jpg') }}" width="596px" height="300px" alt="校领导会见比利时布拉班特―瓦隆省省长一行" />
+                                    </a>
+                                    <a href="http://www.szu.edu.cn/2013/news/2038.html" target="_blank" class="index-pic-a">
+                                        <img src="{{ url_for('static', filename='tmp/20121107091752916.jpg') }}" width="596px" height="300px" alt="校领导与学生共同开启图书漂流仪式" />
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding:6px 0 3px 12px; font-size:9pt; background: #8C0A41 url({{ url_for('static', filename='images/homealpha.gif') }}) no-repeat bottom; color:#fff;">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center" style="padding:5px 0">
+                                <a href="http://www.szu.edu.cn/2013/news/" target="_blank">
+                                    <img src="{{ url_for('static', filename='images/logo-1.gif') }}" width="195" height="77" />
+                                </a>
+                                <a href="http://www1.szu.edu.cn/newspaper/main.asp" target="_blank">
+                                    <img src="{{ url_for('static', filename='images/logo-2.gif') }}" width="195" height="77" />
+                                </a>
+                                <a href="http://gbz.szu.edu.cn/" target="_blank">
+                                    <img src="{{ url_for('static', filename='images/logo-3.gif') }}" width="195" height="77" />
+                                </a>
+                            </td>
+                        </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div id="footer">
+            <table width="100%"  border="0" cellspacing="0" cellpadding="0"  style="border-top: 1px solid #fff ">
+                <tr>
+                    <td valign="top" style="height:10px "></td>
+                </tr>
+                <tr>
+                    <td valign="top" style="background:#bbb; height:1px "></td>
+                </tr>
+                <tr>
+                    <td align="right" valign="middle" class="text1" style="border-top:1px solid #fff; height:41px; padding:0px 12px 0px 12px; font-size:9pt; color:#666;">2012 深圳大学-党委宣传部 | <span class="f">深圳大学办公楼413室</span> | 电话：0755-26536197 | <span class="f">Email:xcb@szu.edu.cn</span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </body>
+</html>
