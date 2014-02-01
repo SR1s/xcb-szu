@@ -62,7 +62,13 @@ def admin_index():
 
 @app.route('/admin/column')
 def admin_column():
-    return render_template("admin/column.html", column="active")
+    sql = """SELECT `id`, `title` FROM `columns` 
+            WHERE `is_delete` <> 1 ORDER BY `order`; """
+    cursor = g.db.cursor()
+    cursor.execute(sql)
+    columns = list(cursor.fetchall())
+
+    return render_template("admin/column.html", column="active", columns=columns)
 
 @app.route('/admin/content')
 def admin_content():
