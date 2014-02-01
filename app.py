@@ -32,6 +32,13 @@ def teardown_request(exception):
     if hasattr(g, 'db'):
         g.db.close()
 
+##############################################
+#
+#
+# website
+#
+#
+##############################################
 
 @app.route('/')
 def index():
@@ -40,6 +47,30 @@ def index():
 @app.route('/apply/report_outter')
 def report_outter():
     return render_template("report-basic.html", report_outter="now")
+
+##############################################
+#
+#
+# admin
+#
+#
+##############################################
+
+@app.route('/admin')
+def admin_index():
+    return render_template("admin/basic.html")
+
+@app.route('/admin/column')
+def admin_column():
+    return render_template("admin/column.html", column="active")
+
+@app.route('/admin/content')
+def admin_content():
+    return render_template("admin/basic.html", content="active")
+
+@app.route('/admin/form')
+def admin_index():
+    return render_template("admin/basic.html", form="active")
 
 if "__main__" == __name__ :
     app.run()

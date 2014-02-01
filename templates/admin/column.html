@@ -1,0 +1,40 @@
+{% extends "admin/basic.html" %}
+{% block body %}
+    <form action="/admin/add_column">
+        <div class="input-group">
+            <span class="input-group-addon">添加新栏目</span>
+            <input type="text" class="form-control" placeholder="栏目名">
+            <span class="input-group-btn">
+                <button class="btn btn-primary" type="button">添加</button>
+            </span>
+        </div>
+    </form>
+    <table class="table table-bordered table-hover table-striped">
+        <h3>当前栏目管理</h3>
+        <thead>
+            <tr>
+                <th width="10%">次序</th>
+                <th width="40%">栏目名</th>
+                <th width="50%">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for column in columns %}
+            <tr>
+                <td>{{ column[1] }}</td>
+                <td>{{ column[2] }}</td>
+                <td>
+                    <a class="table-operation" href="/admin/column/{{ column[0] }}">查看子栏目</a>
+                    <a class="table-operation" href="">上移</a>
+                    <a class="table-operation" href="">下移</a>
+                    <a class="table-operation" href="/admin/column/{{ column[0] }}/del">删除栏目</a>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="3" align="center">未查询到任何栏目</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
