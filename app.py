@@ -34,12 +34,12 @@ def teardown_request(exception):
 
 
 @app.route('/')
-def hello():
-    return render_template("index.html")
+def index():
+    return render_template("index.html", index="now")
 
-@app.route('/apply/report-outter')
+@app.route('/apply/report_outter')
 def report_outter():
-    return render_template("report-basic.html")
+    return render_template("report-basic.html", report_outter="now")
 
 if "__main__" == __name__ :
     app.run()

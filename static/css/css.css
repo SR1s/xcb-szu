@@ -98,7 +98,7 @@ ul{ list-style:none;}
 #navalpha ul { margin-top:0; }
 #navalpha ul, #navalpha li { list-style-type:none; padding-left:0; margin-left:0; }
 #navalpha li { border-bottom:1px solid #8C0A41; padding-bottom:5px; padding-top:5px;}
-#none li { border-bottom:1px; padding-left:5px; padding-bottom:5px; padding-top:5px;}
+#none li { border-bottom:1px; padding-left:1em; padding-bottom:5px; padding-top:5px;}
 #navalpha .spacer { border-bottom-color:#FFF; }
 #navalpha a { color:#606060; margin-left:1px; padding-left:10px;}
 #navalpha a:hover { color:#fa7f00; border-bottom:0; background-color:transparent;background: url("../images/arrow-navbeta.gif") no-repeat left 0.25em; }
