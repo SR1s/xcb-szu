@@ -34,6 +34,24 @@ def teardown_request(exception):
 
 ##############################################
 #
+# provide gobal method or variable for jinja2
+#
+##############################################
+@app.context_processor
+def get_menu():
+    def get_menu():
+        sql = """SELECT `id`, `title` FROM `columns` 
+                WHERE `is_delete` <> 1 ORDER BY `order`; """
+        cursor = g.db.cursor()
+        cursor.execute(sql)
+        columns = [dict(id=column[0], title=column[1]) for column in cursor.fetchall()]
+        return columns
+    return dict(get_menu=get_menu)
+
+
+
+##############################################
+#
 #
 # website
 #
@@ -61,6 +79,11 @@ def report_outter():
 def admin_index():
     return render_template("admin/basic.html")
 
+####################
+#
+# column management
+#
+####################
 @app.route('/admin/column')
 def admin_column():
     sql = """SELECT `id`, `title` FROM `columns` 
@@ -79,6 +102,12 @@ def admin_column_add():
         cursor.execute(sql, (title,))
         g.db.commit()
     return redirect(url_for("admin_column"))
+
+@app.route('/admin/column/del/<int:id>')
+def admin_column_del():
+    sql = """INSERT INTO `columns` (`title`) VALUES ( %s ); """
+    return redirect(url_for("admin_column"))
+
 
 
 @app.route('/admin/content')

@@ -24,10 +24,10 @@
                 <td>{{ column.id }}</td>
                 <td>{{ column.title }}</td>
                 <td>
-                    <a class="table-operation" href="/admin/column/{{ column[0] }}">查看子栏目</a>
+                    <a class="table-operation" href="/admin/column/{{ column.id }}">查看子栏目</a>
                     <a class="table-operation" href="">上移</a>
                     <a class="table-operation" href="">下移</a>
-                    <a class="table-operation" href="/admin/column/{{ column[0] }}/del">删除栏目</a>
+                    <a class="table-operation" href="/admin/column/del/{{ column.id }}">删除栏目</a>
                 </td>
             </tr>
             {% else %}
