@@ -1,11 +1,11 @@
 {% extends "admin/basic.html" %}
 {% block body %}
-    <form action="/admin/add_column">
+    <form action="/admin/column/add" method="post">
         <div class="input-group">
             <span class="input-group-addon">添加新栏目</span>
-            <input type="text" class="form-control" placeholder="栏目名">
+            <input type="text" class="form-control" name="title" placeholder="栏目名">
             <span class="input-group-btn">
-                <button class="btn btn-primary" type="button">添加</button>
+                <button class="btn btn-primary" type="submit">添加</button>
             </span>
         </div>
     </form>
@@ -21,8 +21,8 @@
         <tbody>
             {% for column in columns %}
             <tr>
-                <td>{{ column[0] }}</td>
-                <td>{{ column[1] }}</td>
+                <td>{{ column.id }}</td>
+                <td>{{ column.title }}</td>
                 <td>
                     <a class="table-operation" href="/admin/column/{{ column[0] }}">查看子栏目</a>
                     <a class="table-operation" href="">上移</a>

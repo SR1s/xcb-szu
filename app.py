@@ -56,6 +56,7 @@ def report_outter():
 #
 ##############################################
 
+
 @app.route('/admin')
 def admin_index():
     return render_template("admin/basic.html")
@@ -66,9 +67,19 @@ def admin_column():
             WHERE `is_delete` <> 1 ORDER BY `order`; """
     cursor = g.db.cursor()
     cursor.execute(sql)
-    columns = list(cursor.fetchall())
-
+    columns = [dict(id=column[0], title=column[1]) for column in cursor.fetchall()]
     return render_template("admin/column.html", column="active", columns=columns)
+
+@app.route('/admin/column/add', methods=['POST'])
+def admin_column_add():
+    sql = """INSERT INTO `columns` (`title`) VALUES ( %s ); """
+    if request.method == 'POST' :
+        title = request.form['title']
+        cursor = g.db.cursor()
+        cursor.execute(sql, (title,))
+        g.db.commit()
+    return redirect(url_for("admin_column"))
+
 
 @app.route('/admin/content')
 def admin_content():
