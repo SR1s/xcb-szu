@@ -103,12 +103,13 @@ def admin_column_add():
         g.db.commit()
     return redirect(url_for("admin_column"))
 
-@app.route('/admin/column/del/<int:id>')
-def admin_column_del():
-    sql = """INSERT INTO `columns` (`title`) VALUES ( %s ); """
+@app.route('/admin/column/del/<int:post_id>')
+def admin_column_del(post_id):
+    sql = """UPDATE `columns` SET `is_delete` =  '1' WHERE  `columns`.`id` = %s;"""
+    cursor = g.db.cursor()
+    cursor.execute(sql, (post_id, ))
+    g.db.commit()
     return redirect(url_for("admin_column"))
-
-
 
 @app.route('/admin/content')
 def admin_content():
