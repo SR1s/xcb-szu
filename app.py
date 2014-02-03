@@ -133,6 +133,29 @@ def admin_column_up(post_id):
     return redirect(url_for("admin_column"))
 
 
+@app.route('/admin/column/<int:post_id>/down')
+def admin_column_down(post_id):
+    sql_search = """SELECT `id`, `title` FROM `columns` 
+                    WHERE `is_delete` <> 1 
+                    AND `id` >= %s 
+                    AND `parent_id` <> 1
+                    ORDER BY `id`; """
+    cursor = g.db.cursor()
+    cursor.execute(sql_search, (post_id, ))
+    columns = list(cursor.fetchall())
+    column_next_id = post_id
+    for column in columns:
+        if column[0] != post_id:
+            column_next_id = column[0]
+            break
+    sql_update = """UPDATE `columns` SET `id` = %s WHERE `id` = %s;"""
+    cursor.execute(sql_update, (0, post_id))
+    cursor.execute(sql_update, (post_id, column_next_id))
+    cursor.execute(sql_update, (column_next_id, 0))
+    g.db.commit()
+    return redirect(url_for("admin_column"))
+
+
 ###############################
 #
 # content management

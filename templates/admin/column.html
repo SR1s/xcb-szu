@@ -26,7 +26,7 @@
                 <td>
                     <a class="table-operation" href="/admin/column/{{ column.id }}">查看子栏目</a>
                     <a class="table-operation" href="/admin/column/{{ column.id }}/up">上移</a>
-                    <a class="table-operation" href="">下移</a>
+                    <a class="table-operation" href="/admin/column/{{ column.id }}/down">下移</a>
                     <a class="table-operation" href="/admin/column/del/{{ column.id }}" onclick="return confirm_delete('是否删除{{ column.title }}?')">删除栏目</a>
                 </td>
             </tr>
