@@ -87,7 +87,7 @@ def admin_index():
 @app.route('/admin/column')
 def admin_column():
     sql = """SELECT `id`, `title` FROM `columns` 
-            WHERE `is_delete` <> 1 ORDER BY `order`; """
+            WHERE `is_delete` <> 1 ORDER BY `id`; """
     cursor = g.db.cursor()
     cursor.execute(sql)
     columns = [dict(id=column[0], title=column[1]) for column in cursor.fetchall()]
@@ -111,9 +111,37 @@ def admin_column_del(post_id):
     g.db.commit()
     return redirect(url_for("admin_column"))
 
+@app.route('/admin/column/<int:post_id>/up')
+def admin_column_up(post_id):
+    sql_search = """SELECT `id`, `title` FROM `columns` 
+                    WHERE `is_delete` <> 1 
+                    AND `id` <= %s 
+                    AND `parent_id` <> 1
+                    ORDER BY `id`; """
+    cursor = g.db.cursor()
+    cursor.execute(sql_search, (post_id, ))
+    columns = list(cursor.fetchall())
+    column_pre_id = post_id
+    for column in columns:
+        if column[0] != post_id:
+            column_pre_id = column[0]
+    sql_update = """UPDATE `columns` SET `id` = %s WHERE `id` = %s;"""
+    cursor.execute(sql_update, (0, post_id))
+    cursor.execute(sql_update, (post_id, column_pre_id))
+    cursor.execute(sql_update, (column_pre_id, 0))
+    g.db.commit()
+    return redirect(url_for("admin_column"))
+
+
+###############################
+#
+# content management
+#
+###############################
+
 @app.route('/admin/content')
 def admin_content():
-    return render_template("admin/basic.html", content="active")
+    return render_template("admin/content-edit.html", content="active")
 
 @app.route('/admin/form')
 def admin_index():
