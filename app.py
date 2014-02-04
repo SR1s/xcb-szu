@@ -86,8 +86,10 @@ def admin_index():
 ####################
 @app.route('/admin/column')
 def admin_column():
-    sql = """SELECT `id`, `title` FROM `columns` 
-            WHERE `is_delete` <> 1 ORDER BY `id`; """
+    sql = """SELECT `id`, `title` 
+             FROM `columns` 
+             WHERE `is_delete` <> 1 
+             ORDER BY `order`; """
     cursor = g.db.cursor()
     cursor.execute(sql)
     columns = [dict(id=column[0], title=column[1]) for column in cursor.fetchall()]
@@ -95,11 +97,18 @@ def admin_column():
 
 @app.route('/admin/column/add', methods=['POST'])
 def admin_column_add():
-    sql = """INSERT INTO `columns` (`title`) VALUES ( %s ); """
+    sql_search = """SELECT MAX(`id`) FROM `columns` WHERE `is_delete` = 0 """
+    sql = """INSERT INTO `columns` (`title`, `order`) VALUES ( %s, %s ); """
     if request.method == 'POST' :
         title = request.form['title']
         cursor = g.db.cursor()
-        cursor.execute(sql, (title,))
+        cursor.execute(sql_search)
+        max_id = cursor.fetchall()[0][0]
+        if max_id:
+            max_id = max_id + 1
+        else :
+            max_id = 1
+        cursor.execute(sql, (title, max_id))
         g.db.commit()
     return redirect(url_for("admin_column"))
 
@@ -113,48 +122,62 @@ def admin_column_del(post_id):
 
 @app.route('/admin/column/<int:post_id>/up')
 def admin_column_up(post_id):
-    sql_search = """SELECT `id`, `title` FROM `columns` 
-                    WHERE `is_delete` <> 1 
-                    AND `id` <= %s 
-                    AND `parent_id` <> 1
-                    ORDER BY `id`; """
+    sql_search = """SELECT `id`, `order` FROM `columns` 
+                    WHERE `is_delete` <> 1
+                    AND `parent_id` = 0
+                    ORDER BY `order`; """
+    sql_update = """UPDATE `columns`
+                    SET `order` = %s 
+                    WHERE `id` = %s;"""
     cursor = g.db.cursor()
-    cursor.execute(sql_search, (post_id, ))
+    cursor.execute(sql_search)
     columns = list(cursor.fetchall())
     column_pre_id = post_id
+    column_pre_order = None
+    column_now_order = None
     for column in columns:
         if column[0] != post_id:
             column_pre_id = column[0]
-    sql_update = """UPDATE `columns` SET `id` = %s WHERE `id` = %s;"""
-    cursor.execute(sql_update, (0, post_id))
-    cursor.execute(sql_update, (post_id, column_pre_id))
-    cursor.execute(sql_update, (column_pre_id, 0))
-    g.db.commit()
+            column_pre_order = column[1]
+        else :
+            column_now_id = column[0]
+            column_now_order = column[1]
+            break
+    if column_now_order and column_pre_order :
+        cursor.execute(sql_update, (column_pre_order, post_id))
+        cursor.execute(sql_update, (column_now_order, column_pre_id))
+        g.db.commit()
     return redirect(url_for("admin_column"))
 
 
 @app.route('/admin/column/<int:post_id>/down')
 def admin_column_down(post_id):
-    sql_search = """SELECT `id`, `title` FROM `columns` 
-                    WHERE `is_delete` <> 1 
-                    AND `id` >= %s 
-                    AND `parent_id` <> 1
-                    ORDER BY `id`; """
+    sql_search = """SELECT `id`, `order` FROM `columns` 
+                    WHERE `is_delete` <> 1
+                    AND `parent_id` = 0
+                    ORDER BY `order` desc; """
+    sql_update = """UPDATE `columns`
+                    SET `order` = %s 
+                    WHERE `id` = %s;"""
     cursor = g.db.cursor()
-    cursor.execute(sql_search, (post_id, ))
+    cursor.execute(sql_search)
     columns = list(cursor.fetchall())
-    column_next_id = post_id
+    column_pre_id = post_id
+    column_pre_order = None
+    column_now_order = None
     for column in columns:
         if column[0] != post_id:
-            column_next_id = column[0]
+            column_pre_id = column[0]
+            column_pre_order = column[1]
+        else :
+            column_now_id = column[0]
+            column_now_order = column[1]
             break
-    sql_update = """UPDATE `columns` SET `id` = %s WHERE `id` = %s;"""
-    cursor.execute(sql_update, (0, post_id))
-    cursor.execute(sql_update, (post_id, column_next_id))
-    cursor.execute(sql_update, (column_next_id, 0))
-    g.db.commit()
+    if column_now_order and column_pre_order :
+        cursor.execute(sql_update, (column_pre_order, post_id))
+        cursor.execute(sql_update, (column_now_order, column_pre_id))
+        g.db.commit()
     return redirect(url_for("admin_column"))
-
 
 ###############################
 #
