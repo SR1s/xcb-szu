@@ -4,7 +4,7 @@ from flask import Flask, g, request, render_template, flash, redirect, url_for
 import MySQLdb
 
 import sys  
-reload(sys)  
+reload(sys) 
 sys.setdefaultencoding('utf8')   
 
 import imp
@@ -40,11 +40,14 @@ def teardown_request(exception):
 @app.context_processor
 def get_menu():
     def get_menu():
-        sql = """SELECT `id`, `title` FROM `columns` 
-                WHERE `is_delete` <> 1 ORDER BY `order`; """
+        sql = """SELECT `id`, `title` 
+                 FROM `columns` 
+                 WHERE `is_delete` <> 1 
+                 ORDER BY `order`; """
         cursor = g.db.cursor()
         cursor.execute(sql)
-        columns = [dict(id=column[0], title=column[1]) for column in cursor.fetchall()]
+        columns = [dict(id=column[0], title=column[1]) 
+                        for column in cursor.fetchall()]
         return columns
     return dict(get_menu=get_menu)
 
@@ -71,9 +74,7 @@ def report_outter():
 #
 # admin
 #
-#
 ##############################################
-
 
 @app.route('/admin')
 def admin_index():
@@ -97,8 +98,11 @@ def admin_column():
 
 @app.route('/admin/column/add', methods=['POST'])
 def admin_column_add():
-    sql_search = """SELECT MAX(`id`) FROM `columns` WHERE `is_delete` = 0 """
-    sql = """INSERT INTO `columns` (`title`, `order`) VALUES ( %s, %s ); """
+    sql_search = """SELECT MAX(`id`) 
+                    FROM `columns` 
+                    WHERE `is_delete` = 0 """
+    sql = """INSERT INTO `columns` (`title`, `order`) 
+             VALUES ( %s, %s ); """
     if request.method == 'POST' :
         title = request.form['title']
         cursor = g.db.cursor()
@@ -114,7 +118,9 @@ def admin_column_add():
 
 @app.route('/admin/column/del/<int:post_id>')
 def admin_column_del(post_id):
-    sql = """UPDATE `columns` SET `is_delete` =  '1' WHERE  `columns`.`id` = %s;"""
+    sql = """UPDATE `columns` 
+             SET `is_delete` =  '1' 
+             WHERE  `columns`.`id` = %s;"""
     cursor = g.db.cursor()
     cursor.execute(sql, (post_id, ))
     g.db.commit()
