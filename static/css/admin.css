@@ -22,8 +22,17 @@
 	margin-left: 5px;
 }
 
+.edit-content {
+	background-color: #FFFFFF;
+	border-radius: 8px;
+	padding: 10px;
+	width: 800px;
+	margin-right: auto;
+	margin-left: auto;
+}
+
 #editor {
-	max-height: 250px;
+	min-height: 250px;
 	height: 250px;
 	background-color: white;
 	border-collapse: separate; 
@@ -52,14 +61,13 @@ div[data-role="editor-toolbar"] {
 label {
 	width: 80px;
 	padding-left: 5px;
-	padding-right: 5px;
 	margin-bottom: 0;
 	text-align: center;
 	vertical-align: middle;
 }
 
 .content-input {
-	width: 670px;
+	width: 675px;
 }
 
 .padding-light {
