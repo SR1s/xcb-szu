@@ -200,10 +200,15 @@ def admin_content():
 
 @app.route("/admin/content/add", methods=['post',])
 def admin_content_add():
-    dump = ''
-    for (n) in request.form:
-        dump += n+":"+request.form[n]+'<br/>'
-    return dump
+    sql = """INSERT INTO `contents`(`title`, `content`, `column_id`) 
+             VALUES (%s, %s, %s); """
+    cursor = g.db.cursor()
+    title = request.form['title']
+    content = request.form['content']
+    column_id = request.form['column_id']
+    cursor.execute(sql, (title, content, column_id))
+    g.db.commit()
+    return redirect(url_for("index"))
 
 
 ###############################
