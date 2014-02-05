@@ -74,6 +74,7 @@ def report_outter():
 #
 # admin
 #
+#
 ##############################################
 
 @app.route('/admin')
@@ -85,6 +86,8 @@ def admin_index():
 # column management
 #
 ####################
+
+# 
 @app.route('/admin/column')
 def admin_column():
     sql = """SELECT `id`, `title` 
@@ -194,6 +197,13 @@ def admin_column_down(post_id):
 @app.route('/admin/content')
 def admin_content():
     return render_template("admin/content-edit.html", content="active")
+
+
+###############################
+#
+# form management
+#
+###############################
 
 @app.route('/admin/form')
 def admin_index():
