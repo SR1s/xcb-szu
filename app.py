@@ -198,6 +198,13 @@ def admin_column_down(post_id):
 def admin_content():
     return render_template("admin/content-edit.html", content="active")
 
+@app.route("/admin/content/add", methods=['post',])
+def admin_content_add():
+    dump = ''
+    for (n) in request.form:
+        dump += n+":"+request.form[n]+'<br/>'
+    return dump
+
 
 ###############################
 #
