@@ -48,3 +48,20 @@ div[data-role="editor-toolbar"] {
 .dropdown-menu a {
   cursor: pointer;
 }
+
+label {
+	width: 80px;
+	padding-left: 5px;
+	padding-right: 5px;
+	margin-bottom: 0;
+	text-align: center;
+	vertical-align: middle;
+}
+
+.content-input {
+	width: 670px;
+}
+
+.padding-light {
+	padding: 5px;
+}
