@@ -222,6 +222,32 @@ def admin_content_add():
         return redirect(url_for("index"))
     return render_template("admin/content-edit.html")
 
+@app.route("/admin/content/edit/<int:post_id>", methods=['GET','POST'])
+def admin_content_edit(post_id):
+    sql = """SELECT `title`, `content`, `column_id` 
+             FROM `contents` 
+             WHERE `id` = %s; """
+    cursor = g.db.cursor()
+    if request.method == "POST":
+        sql = """UPDATE `contents` 
+                 SET `title` = %s, 
+                     `content` = %s, 
+                     `column_id` = %s 
+                 WHERE `id` = %s ;"""
+        title = request.form['title']
+        content = request.form['content']
+        column_id = request.form['column_id']
+        cursor.execute(sql, (title, content, column_id, post_id))
+        g.db.commit()
+        return redirect(url_for("admin_content"))
+    cursor.execute(sql, (post_id,))
+    content=dict()
+    for con in cursor.fetchall():
+        content["title"] = con[0]
+        content["content"] = con[1]
+        content["column_id"] = con[2]
+    return render_template("admin/content-edit.html", content = content)
+
 @app.route("/admin/content/del/<int:post_id>", methods=['GET',])
 def admin_content_del(post_id):
     sql = """UPDATE `contents` 

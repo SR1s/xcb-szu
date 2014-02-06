@@ -12,13 +12,13 @@
         <script src="{{ url_for('static', filename='js/bootstrap-wysiwyg.js') }}"></script>
     </head>
     <body>
-        <form action="/admin/content/add" method="post">
+        <form method="post">
             <div class="edit-content">
                 <div id="alerts"></div>
                 <div class="">
                     <div class="form-inline padding-light">
                         <label>文章标题：</label>
-                        <input class="content-input" name="title" type="text" />
+                        <input class="content-input" name="title" type="text" value="{% if content is defined %}{{content.title }}{% endif %}"/>
                     </div>
                     <div class="form-inline padding-light">
                         <label>所属大类：</label>
@@ -75,7 +75,7 @@
                         </div>-->
                     </div>
                     <input name="content" id="content" type="hidden" />
-                    <div id="editor">正文...</div>
+                    <div id="editor">{% if content is defined %}{{ content.content|safe }}{% endif %}</div>
                     <div class="padding-light" id="add-content-button">
                         <a class="half-width btn" href="/admin/content">返回管理页面</a>
                         <button class="half-width btn btn-primary" onclick="$('#content').val($('#editor').html())">提交文章</button>
