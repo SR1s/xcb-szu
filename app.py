@@ -222,6 +222,16 @@ def admin_content_add():
         return redirect(url_for("index"))
     return render_template("admin/content-edit.html")
 
+@app.route("/admin/content/del/<int:post_id>", methods=['GET',])
+def admin_content_del(post_id):
+    sql = """UPDATE `contents` 
+             SET `is_delete` = 1
+             WHERE `id` = %s; """
+    cursor = g.db.cursor()
+    cursor.execute(sql, (post_id,))
+    g.db.commit()
+    return redirect(url_for("admin_content"))
+
 
 ###############################
 #
