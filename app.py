@@ -196,19 +196,31 @@ def admin_column_down(post_id):
 
 @app.route('/admin/content')
 def admin_content():
-    return render_template("admin/content-edit.html", content="active")
-
-@app.route("/admin/content/add", methods=['post',])
-def admin_content_add():
-    sql = """INSERT INTO `contents`(`title`, `content`, `column_id`) 
-             VALUES (%s, %s, %s); """
+    sql = """SELECT `id`, `title`, `time` 
+             FROM `contents` 
+             WHERE `is_delete` = 0
+             ORDER BY `time` desc ;"""
     cursor = g.db.cursor()
-    title = request.form['title']
-    content = request.form['content']
-    column_id = request.form['column_id']
-    cursor.execute(sql, (title, content, column_id))
-    g.db.commit()
-    return redirect(url_for("index"))
+    cursor.execute(sql)
+    contents = [dict(id=content[0], title=content[1], 
+                     time=content[2]) 
+                     for content in cursor.fetchall()]
+    return render_template("admin/content.html", 
+            contents=contents, content="active")
+
+@app.route("/admin/content/add", methods=['POST','GET'])
+def admin_content_add():
+    if request.method == 'POST':
+        sql = """INSERT INTO `contents`(`title`, `content`, `column_id`) 
+                 VALUES (%s, %s, %s); """
+        cursor = g.db.cursor()
+        title = request.form['title']
+        content = request.form['content']
+        column_id = request.form['column_id']
+        cursor.execute(sql, (title, content, column_id))
+        g.db.commit()
+        return redirect(url_for("index"))
+    return render_template("admin/content-edit.html")
 
 
 ###############################
