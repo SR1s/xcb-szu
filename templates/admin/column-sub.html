@@ -1,6 +1,6 @@
 {% extends "admin/basic.html" %}
 {% block body %}
-    <form action="/admin/column/add" method="post">
+    <form action="/admin/column/{{id}}/add" method="post">
         <div class="input-group">
             <span class="input-group-addon">添加新栏目到 {{title}}</span>
             <input type="text" class="form-control" name="title" placeholder="栏目名">

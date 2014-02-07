@@ -120,7 +120,8 @@ def admin_column():
 def admin_column_add():
     sql_search = """SELECT MAX(`id`) 
                     FROM `columns` 
-                    WHERE `is_delete` = 0 """
+                    WHERE `is_delete` = 0 
+                    AND `parent_id` = 0 ;"""
     sql = """INSERT INTO `columns` (`title`, `order`) 
              VALUES ( %s, %s ); """
     if request.method == 'POST' :
@@ -225,7 +226,28 @@ def admin_sub_column(post_id):
     title = cursor.fetchall()[0][0]
     return render_template('admin/column-sub.html', 
             column="active", columns=columns, 
-            title = title)
+            id=post_id, title = title)
+
+@app.route('/admin/column/<int:post_id>/add', methods=['POST'])
+def admin_sub_column_add(post_id):
+    sql_search = """SELECT MAX(`id`) 
+                    FROM `columns` 
+                    WHERE `is_delete` = 0 
+                    AND `parent_id` = %s ;"""
+    sql = """INSERT INTO `columns` (`title`, `order`, `parent_id`) 
+             VALUES ( %s, %s, %s ); """
+    if request.method == 'POST' :
+        title = request.form['title']
+        cursor = g.db.cursor()
+        cursor.execute(sql_search, (post_id, ))
+        max_id = cursor.fetchall()[0][0]
+        if max_id:
+            max_id = max_id + 1
+        else :
+            max_id = 1
+        cursor.execute(sql, (title, max_id, post_id))
+        g.db.commit()
+    return redirect(url_for("admin_sub_column", post_id=post_id))
 
 
 ###############################
