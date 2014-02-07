@@ -3,7 +3,7 @@
 from flask import Flask, g, request, render_template, flash, redirect, url_for
 import MySQLdb
 
-import sys  
+import sys
 reload(sys) 
 sys.setdefaultencoding('utf8')   
 
@@ -42,8 +42,8 @@ def get_menu():
     def get_menu():
         sql = """SELECT `id`, `title` 
                  FROM `columns` 
-                 WHERE `is_delete` <> 1 
-                 AND `parent_id` <> 0
+                 WHERE `is_delete` = 0 
+                 AND `parent_id` = 0
                  ORDER BY `order`; """
         cursor = g.db.cursor()
         cursor.execute(sql)
@@ -66,9 +66,7 @@ def get_columns():
         columns = [dict(id=column[0], title=column[1]) 
                         for column in cursor.fetchall()]
         return columns
-    return dict(get_menu=get_menu)
-
-
+    return dict(get_columns=get_columns)
 
 ##############################################
 #
@@ -104,7 +102,6 @@ def admin_index():
 #
 ####################
 
-# 
 @app.route('/admin/column')
 def admin_column():
     sql = """SELECT `id`, `title` 
@@ -212,7 +209,8 @@ def admin_sub_column(post_id):
     sql = """SELECT `id`, `title`, `parent_id`
              FROM `columns`
              WHERE `is_delete` <> 1
-             AND `parent_id` = %s ;"""
+             AND `parent_id` = %s 
+             ORDER BY `order`;"""
     cursor = g.db.cursor()
     cursor.execute(sql, (post_id,))
     columns = [dict(id=column[0], title=column[1], parent_id=column[2])
@@ -259,6 +257,68 @@ def admin_column_del(post_id, del_id):
     g.db.commit()
     return redirect(url_for("admin_sub_column",
                     post_id=post_id))
+
+@app.route('/admin/column/<int:post_id>/up/<int:up_id>')
+def admin_sub_column_up(post_id, up_id):
+    sql_search = """SELECT `id`, `order` FROM `columns` 
+                    WHERE `is_delete` <> 1
+                    AND `parent_id` = %s
+                    ORDER BY `order`; """
+    sql_update = """UPDATE `columns`
+                    SET `order` = %s 
+                    WHERE `id` = %s;"""
+    cursor = g.db.cursor()
+    cursor.execute(sql_search, (post_id,))
+    columns = list(cursor.fetchall())
+    column_pre_id = up_id
+    column_pre_order = None
+    column_now_order = None
+    for column in columns:
+        if column[0] != up_id:
+            column_pre_id = column[0]
+            column_pre_order = column[1]
+        else :
+            column_now_id = column[0]
+            column_now_order = column[1]
+            break
+    #return sql_update % (column_pre_order, up_id) + '<br/>' + sql_update % (column_now_order, column_pre_id)
+    if column_now_order and column_pre_order :
+        cursor.execute(sql_update, (column_pre_order, up_id))
+        cursor.execute(sql_update, (column_now_order, column_pre_id))
+        g.db.commit()
+    return redirect(url_for("admin_sub_column",post_id=post_id))
+
+
+@app.route('/admin/column/<int:post_id>/down/<int:down_id>')
+def admin_sub_column_down(post_id, down_id):
+    sql_search = """SELECT `id`, `order` FROM `columns` 
+                    WHERE `is_delete` <> 1
+                    AND `parent_id` = %s
+                    ORDER BY `order` desc; """
+    sql_update = """UPDATE `columns`
+                    SET `order` = %s 
+                    WHERE `id` = %s;"""
+    cursor = g.db.cursor()
+    cursor.execute(sql_search, (post_id,))
+    columns = list(cursor.fetchall())
+    column_pre_id = down_id
+    column_pre_order = None
+    column_now_order = None
+    for column in columns:
+        if column[0] != down_id:
+            column_pre_id = column[0]
+            column_pre_order = column[1]
+        else :
+            column_now_id = column[0]
+            column_now_order = column[1]
+            break
+    #return sql_update % (column_pre_order, down_id) + '<br/>' + sql_update % (column_now_order, column_pre_id)
+    if column_now_order and column_pre_order :
+        cursor.execute(sql_update, (column_pre_order, down_id))
+        cursor.execute(sql_update, (column_now_order, column_pre_id))
+        g.db.commit()
+    return redirect(url_for("admin_sub_column",post_id=post_id))
+
 
 
 ###############################
