@@ -141,7 +141,7 @@ def admin_column_add():
 def admin_column_del(post_id):
     sql = """UPDATE `columns` 
              SET `is_delete` =  '1' 
-             WHERE  `columns`.`id` = %s;"""
+             WHERE `id` = %s;"""
     cursor = g.db.cursor()
     cursor.execute(sql, (post_id, ))
     g.db.commit()
@@ -248,6 +248,17 @@ def admin_sub_column_add(post_id):
         cursor.execute(sql, (title, max_id, post_id))
         g.db.commit()
     return redirect(url_for("admin_sub_column", post_id=post_id))
+
+@app.route('/admin/column/<int:post_id>/del/<int:del_id>')
+def admin_column_del(post_id, del_id):
+    sql = """UPDATE `columns` 
+             SET `is_delete` =  '1' 
+             WHERE `id` = %s;"""
+    cursor = g.db.cursor()
+    cursor.execute(sql, (del_id, ))
+    g.db.commit()
+    return redirect(url_for("admin_sub_column",
+                    post_id=post_id))
 
 
 ###############################
