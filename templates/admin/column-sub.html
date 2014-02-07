@@ -2,7 +2,7 @@
 {% block body %}
     <form action="/admin/column/add" method="post">
         <div class="input-group">
-            <span class="input-group-addon">添加新栏目</span>
+            <span class="input-group-addon">添加新栏目到 {{title}}</span>
             <input type="text" class="form-control" name="title" placeholder="栏目名">
             <span class="input-group-btn">
                 <button class="btn btn-primary" type="submit">添加</button>
@@ -10,7 +10,7 @@
         </div>
     </form>
     <table class="table table-bordered table-hover table-striped">
-        <h3>管理总栏目</h3>
+        <h3>管理 {{title}} 的子栏目</h3>
         <thead>
             <tr>
                 <th width="10%">ID</th>

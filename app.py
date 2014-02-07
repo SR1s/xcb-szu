@@ -43,6 +43,23 @@ def get_menu():
         sql = """SELECT `id`, `title` 
                  FROM `columns` 
                  WHERE `is_delete` <> 1 
+                 AND `parent_id` <> 0
+                 ORDER BY `order`; """
+        cursor = g.db.cursor()
+        cursor.execute(sql)
+        columns = [dict(id=column[0], title=column[1]) 
+                        for column in cursor.fetchall()]
+        return columns
+    return dict(get_menu=get_menu)
+
+
+### to be done
+@app.context_processor
+def get_columns():
+    def get_columns():
+        sql = """SELECT `id`, `title` 
+                 FROM `columns` 
+                 WHERE `is_delete` <> 1 
                  ORDER BY `order`; """
         cursor = g.db.cursor()
         cursor.execute(sql)
@@ -187,6 +204,29 @@ def admin_column_down(post_id):
         cursor.execute(sql_update, (column_now_order, column_pre_id))
         g.db.commit()
     return redirect(url_for("admin_column"))
+
+
+@app.route("/admin/column/<int:post_id>")
+def admin_sub_column(post_id):
+    sql = """SELECT `id`, `title`, `parent_id`
+             FROM `columns`
+             WHERE `is_delete` <> 1
+             AND `parent_id` = %s ;"""
+    cursor = g.db.cursor()
+    cursor.execute(sql, (post_id,))
+    columns = [dict(id=column[0], title=column[1], parent_id=column[2])
+               for column in cursor.fetchall()]
+
+    sql = """SELECT `title`
+             FROM `columns`
+             WHERE `is_delete` <> 1
+             AND `id` = %s ;"""
+    cursor.execute(sql, (post_id,))
+    title = cursor.fetchall()[0][0]
+    return render_template('admin/column-sub.html', 
+            column="active", columns=columns, 
+            title = title)
+
 
 ###############################
 #
