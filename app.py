@@ -80,6 +80,14 @@ def get_columns():
 def index():
     return render_template("index.html", index="now")
 
+@app.route('/column/<int:post_id>')
+def column(post_id):
+    return render_template("column-sub.html", id=post_id)
+
+@app.route('/column/<int:post_id>/sub/<int:sub_id>')
+def column_sub(post_id, sub_id):
+    return render_template("column-sub.html", post_id="now")
+
 @app.route('/apply/report_outter')
 def report_outter():
     return render_template("report-basic.html", report_outter="now")
@@ -294,7 +302,7 @@ def admin_sub_column_down(post_id, down_id):
     sql_search = """SELECT `id`, `order` FROM `columns` 
                     WHERE `is_delete` <> 1
                     AND `parent_id` = %s
-                    ORDER BY `order` desc; """
+                    ORDER BY `order` desc ; """
     sql_update = """UPDATE `columns`
                     SET `order` = %s 
                     WHERE `id` = %s;"""

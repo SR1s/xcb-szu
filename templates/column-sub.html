@@ -1,0 +1,124 @@
+{% extends "basic.html" %}
+{% block bodyer %}
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+            <td align="left" width="145" valign="top"></td>
+            <td style="padding:10px 0 3px 12px; font-size:9pt; background-position:top right; background-repeat:no-repeat; background-color:#A08359"></td>
+        </tr>
+    </table>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+       <tr>
+            <td width="145" valign="top" title="364">
+                <div id="navalpha">
+                {% include 'menu.html' %}
+                </div>
+            </td>
+            <td width="15"></td>
+            <td width="189" valign="top">
+                <div id="navbeta">
+                    <ul>
+                        <li><a href="type.asp?typeid=32&amp;bigclassid=115&amp;showType=%C4%DA%C8%DD">科学发展观网站</a></li>
+                        <li><a href="type.asp?typeid=32&amp;bigclassid=122&amp;showType=%C4%DA%C8%DD">人民网</a></li>
+                        <li><a href="type.asp?typeid=32&amp;bigclassid=123&amp;showType=%C4%DA%C8%DD">新华网</a></li>
+                    </ul>
+                </div>
+            </td>
+            <td width="15"></td>
+            <td valign="top" width="596">
+                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td style="padding:8px 0px 5px 0px; border-bottom:1px solid #B3B3B3">
+                            <h1 class="position">
+                                <span style="padding:2px 5px 3px 3px ">
+                                    <img src="{{ url_for('static',filename='images/type01.gif') }}" width="12" height="12" align="absmiddle">
+                                </span>
+                                <span class="6">理论学习 - 科学发展观网站</span>
+                            </h1>
+                        </td>
+                        <td align="right" style="border-bottom:1px solid #B3B3B3">
+                            <img src="{{ url_for('static',filename='images/title_icon.gif') }}" width="42" height="10"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" valign="top" style="padding:0px 1px 0px 1px; "></td>
+                    </tr>
+                </table>
+                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td valign="top">
+                            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td valign="top">
+                                        <table width="100%" border="0" cellpadding="3" cellspacing="0" style="margin-bottom:10px;">
+                                            <tr bgcolor="#F7F7F7">
+                                                <td>
+                                                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                                        <tr>
+                                                            <td width="7%" align="center" valign="middle">
+                                                                <img src="{{ url_for('static',filename='images/ico004.gif') }}">
+                                                            </td>
+                                                            <td width="93%" height="30">
+                                                                <a href="type.asp?typeid=32&amp;bigclassid=115&amp;showType=%C4%DA%C8%DD">科学发展观网站</a>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2"></td>
+                                            </tr>
+                                        </table>
+                                        <br>
+                                        <table width="100%" border="0" cellpadding="3" cellspacing="0" style="margin-bottom:10px;">
+                                            <tr bgcolor="#F7F7F7">
+                                                <td>
+                                                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                                        <tr>
+                                                            <td width="7%" align="center" valign="middle">
+                                                                <img src="{{ url_for('static',filename='images/ico004.gif') }}">
+                                                            </td>
+                                                            <td width="93%" height="30">
+                                                                <a href="type.asp?typeid=32&amp;bigclassid=122&amp;showType=%C4%DA%C8%DD">人民网</a>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2"></td>
+                                            </tr>
+                                        </table>
+                                        <br />
+                                        <table width="100%" border="0" cellpadding="3" cellspacing="0" style="margin-bottom:10px;">
+                                            <tr bgcolor="#F7F7F7">
+                                                <td>
+                                                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                                        <tr>
+                                                            <td width="7%" align="center" valign="middle">
+                                                                <img src="{{ url_for('static',filename='images/ico004.gif') }}">
+                                                            </td>
+                                                            <td width="93%" height="30">
+                                                                <a href="type.asp?typeid=32&amp;bigclassid=123&amp;showType=%C4%DA%C8%DD">新华网</a>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2"></td>
+                                            </tr>
+                                        </table>
+                                        <br />
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td valign="top" style="padding:10px 20px" width="1">
+                            <img src="{{ url_for('static',filename='images/left2.jpg') }}" style="padding:10px 0" />
+                            <img src="{{ url_for('static',filename='images/left1.jpg') }}" style="padding:10px 0">
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+{% endblock %}

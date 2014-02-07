@@ -4,7 +4,7 @@
     </li>
     {% for column in get_menu() %}
     <li>
-        <a class="{{ id }}" href="/column/{{ column.id }}">{{ column.title }}</a>
+        <a class="{% if id == column.id %}now{% endif %}" href="/column/{{ column.id }}">{{ column.title }}</a>
     </li>
     {% endfor %}
     <li>
