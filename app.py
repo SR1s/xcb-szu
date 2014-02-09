@@ -52,6 +52,31 @@ def get_menu():
         return columns
     return dict(get_menu=get_menu)
 
+@app.context_processor
+def get_all_columns():
+    def get_all_columns():
+        sql_parent = """SELECT `id`, `title` 
+                        FROM `columns` 
+                        WHERE `is_delete` = 0 
+                        AND `parent_id` = 0
+                        ORDER BY `order`; """
+
+        sql_child = """SELECT `id`, `title` 
+                       FROM `columns` 
+                       WHERE `is_delete` = 0 
+                       AND `parent_id` = %s 
+                       ORDER BY `order`; """
+        cursor = g.db.cursor()
+        cursor.execute(sql_parent)
+        columns = [dict(id=column[0], title=column[1]) 
+                        for column in cursor.fetchall()]
+        for column in columns :
+            cursor.execute(sql_child, (column["id"],))
+            column["child"] = [dict(id=col[0], title=col[1])
+                            for col in cursor.fetchall() ]
+        return columns
+    return dict(get_all_columns=get_all_columns)
+
 
 ### to be done
 @app.context_processor

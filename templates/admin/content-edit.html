@@ -21,13 +21,18 @@
                         <input class="content-input" name="title" type="text" value="{% if content is defined %}{{content.title }}{% endif %}"/>
                     </div>
                     <div class="form-inline padding-light">
-                        <label>所属大类：</label>
+                        <label>所属分类：</label>
                         <select class="span4" name="column_id">
-                            <option value="7">请选择一个大类</option>
-                        </select>
-                        <label>所属小类：</label>
-                        <select class="span4">
-                            <option>选择一个小类</option>
+                            <optgroup>
+                                <option>请选择文章所属分类</option>
+                            </optgroup>
+                            {% for column in get_all_columns() %}
+                            <optgroup label="{{column.title}}" value="{{column.id}}">
+                                {% for col in column.child %}
+                                <option {% if content is defined %}{% if content.column_id == col.id %}selected="selected"{% endif %}{% endif %} value="{{col.id}}">{{col.title}}</option>
+                                {% endfor %}
+                            </optgroup>
+                            {% endfor %}
                         </select>
                     </div>
                     <div class="btn-toolbar" data-role="editor-toolbar" data-target="#editor">
