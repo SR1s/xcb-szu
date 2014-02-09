@@ -82,7 +82,15 @@ def index():
 
 @app.route('/column/<int:post_id>')
 def column(post_id):
-    return render_template("column-sub.html", id=post_id)
+    sql = """SELECT `id` 
+             FROM `columns` 
+             WHERE `parent_id` = %s
+             AND `is_delete` = 0 
+             ORDER BY `order`;"""
+    cursor = g.db.cursor()
+    cursor.execute(sql, (post_id,))
+    sub_id = cursor.fetchall()[0][0]
+    return redirect(url_for("column_sub", post_id=post_id, sub_id=sub_id))
 
 @app.route('/column/<int:post_id>/sub/<int:sub_id>')
 def column_sub(post_id, sub_id):
