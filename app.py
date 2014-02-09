@@ -86,7 +86,7 @@ def column(post_id):
 
 @app.route('/column/<int:post_id>/sub/<int:sub_id>')
 def column_sub(post_id, sub_id):
-    return render_template("column-sub.html", post_id="now")
+    return render_template("column-sub.html", id=post_id, sub_id_id="now")
 
 @app.route('/apply/report_outter')
 def report_outter():

@@ -8,7 +8,7 @@
     </table>
     <table width="100%" border="0" cellspacing="0" cellpadding="0">
        <tr>
-            <td width="145" valign="top" title="364">
+            <td width="145" valign="top">
                 <div id="navalpha">
                 {% include 'menu.html' %}
                 </div>
@@ -17,9 +17,9 @@
             <td width="189" valign="top">
                 <div id="navbeta">
                     <ul>
-                        <li><a href="type.asp?typeid=32&amp;bigclassid=115&amp;showType=%C4%DA%C8%DD">科学发展观网站</a></li>
-                        <li><a href="type.asp?typeid=32&amp;bigclassid=122&amp;showType=%C4%DA%C8%DD">人民网</a></li>
-                        <li><a href="type.asp?typeid=32&amp;bigclassid=123&amp;showType=%C4%DA%C8%DD">新华网</a></li>
+                        {% for column in columns %}
+                        <li><a href="/column/{{cur_big.id}}/sub/{{column.id}}">{{column.title}}</a></li>
+                        {% endfor %}
                     </ul>
                 </div>
             </td>
@@ -32,7 +32,7 @@
                                 <span style="padding:2px 5px 3px 3px ">
                                     <img src="{{ url_for('static',filename='images/type01.gif') }}" width="12" height="12" align="absmiddle">
                                 </span>
-                                <span class="6">理论学习 - 科学发展观网站</span>
+                                <span class="6">{{cur_big.title}} - {{cur_sub.title}}</span>
                             </h1>
                         </td>
                         <td align="right" style="border-bottom:1px solid #B3B3B3">
@@ -48,7 +48,7 @@
                             <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                 <tr>
                                     <td valign="top">
-                                        <table width="100%" border="0" cellpadding="3" cellspacing="0" style="margin-bottom:10px;">
+                                        <table width="100%" border="0" cellpadding="3" cellspacing="0" style="margin-bottom:5px;">
                                             <tr bgcolor="#F7F7F7">
                                                 <td>
                                                     <table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -57,57 +57,22 @@
                                                                 <img src="{{ url_for('static',filename='images/ico004.gif') }}">
                                                             </td>
                                                             <td width="93%" height="30">
-                                                                <a href="type.asp?typeid=32&amp;bigclassid=115&amp;showType=%C4%DA%C8%DD">科学发展观网站</a>
+                                                                <a href="type.asp?typeid=32&amp;bigclassid=115&amp;showType=%C4%DA%C8%DD">{{cur_sub.title}}</a>
                                                             </td>
                                                         </tr>
                                                     </table>
                                                 </td>
                                             </tr>
-                                            <tr>
-                                                <td colspan="2"></td>
-                                            </tr>
                                         </table>
-                                        <br>
-                                        <table width="100%" border="0" cellpadding="3" cellspacing="0" style="margin-bottom:10px;">
-                                            <tr bgcolor="#F7F7F7">
-                                                <td>
-                                                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                                        <tr>
-                                                            <td width="7%" align="center" valign="middle">
-                                                                <img src="{{ url_for('static',filename='images/ico004.gif') }}">
-                                                            </td>
-                                                            <td width="93%" height="30">
-                                                                <a href="type.asp?typeid=32&amp;bigclassid=122&amp;showType=%C4%DA%C8%DD">人民网</a>
-                                                            </td>
-                                                        </tr>
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="2"></td>
-                                            </tr>
-                                        </table>
-                                        <br />
-                                        <table width="100%" border="0" cellpadding="3" cellspacing="0" style="margin-bottom:10px;">
-                                            <tr bgcolor="#F7F7F7">
-                                                <td>
-                                                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                                        <tr>
-                                                            <td width="7%" align="center" valign="middle">
-                                                                <img src="{{ url_for('static',filename='images/ico004.gif') }}">
-                                                            </td>
-                                                            <td width="93%" height="30">
-                                                                <a href="type.asp?typeid=32&amp;bigclassid=123&amp;showType=%C4%DA%C8%DD">新华网</a>
-                                                            </td>
-                                                        </tr>
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="2"></td>
-                                            </tr>
-                                        </table>
-                                        <br />
+                                        <ul style="margin:10px 0 5px 10px; padding:0;">
+                                            {% for content in contents %}
+                                            <li style="margin:0 0 8px 0; padding:0">
+                                                <strong>·</strong>
+                                                <a href="/content/{{content.id}}">{{content.title}}</a>
+                                                <span style="font-family:Verdana, Arial, Helvetica, sans-serif; font-size:9px; color:#999">({{content.time}})</span>
+                                            </li> 
+                                            {% endfor %}
+                                        </ul>
                                     </td>
                                 </tr>
                             </table>
