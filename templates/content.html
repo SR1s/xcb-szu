@@ -1,0 +1,77 @@
+﻿{% extends "basic.html" %}
+{% block bodyer %}
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+            <td align="left" width="145" valign="top"></td>
+            <td style="padding:10px 0 3px 12px; font-size:9pt; background-position:top right; background-repeat:no-repeat; background-color:#A08359"></td>
+        </tr>
+    </table>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+       <tr>
+            <td width="145" valign="top">
+                <div id="navalpha">
+                {% include 'menu.html' %}
+                </div>
+            </td>
+            <td width="15"></td>
+            <td width="189" valign="top">
+                <div id="navbeta">
+                    <ul>
+                        {% for column in columns %}
+                        <li><a href="/column/{{cur_big.id}}/sub/{{column.id}}">{{column.title}}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </td>
+            <td width="15"></td>
+            <td width="596" valign="top">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td>
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td style="padding:8px 0px 5px 0px; border-bottom:1px solid #B3B3B3">
+                                    <h1 class="position">
+                                        <span style="padding:2px 5px 3px 3px ">
+                                            <img src="{{ url_for('static',filename='images/type01.gif') }}" width="12" height="12" align="absmiddle">
+                                        </span>
+                                        <span class="6">{{cur_big.title}} - {{cur_sub.title}}</span>
+                                    </h1>
+                                </td>
+                                <td align="right" style="border-bottom:1px solid #B3B3B3">
+                                    <img src="{{ url_for('static',filename='images/title_icon.gif') }}" width="42" height="10">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" valign="top" style="padding:0px 1px 0px 1px; ">
+                                </td>
+                            </tr>
+                        </table>
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td width="50%" valign="top" style="padding:0px 0px 10px 0px ">
+                                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td>
+                                                <h2 class="title">我校大学生志愿者积极参加市节水宣传活动</h2>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="font-size:12px; border-bottom:1px dashed  #CCC; padding-bottom:5px; color:#777">发表日期：2012年11月13日 阅读数：131</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding-top:12px">
+                                                {{contents.content|safe}}
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr></tr>
+            </table>
+        </tr>
+    </table>
+{% endblock %}

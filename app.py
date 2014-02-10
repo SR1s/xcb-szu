@@ -150,9 +150,53 @@ def column_sub(post_id, sub_id):
     cursor.execute(sql_search_content,(sub_id,))
     contents = [dict(id=content[0], title=content[1], time=content[2]) 
                 for content in cursor.fetchall() ]
-    return render_template("column-sub.html", id=post_id, sub_id_id="now", 
-                        cur_big=cur_big, cur_sub=cur_sub, columns=columns, 
-                        contents=contents )
+    return render_template("column-sub.html", id=post_id, columns=columns,
+                        cur_big=cur_big, cur_sub=cur_sub, contents=contents )
+
+@app.route("/content/<int:post_id>")
+def content(post_id):
+    sql = """SELECT `title`, `content`, `column_id`, `time` 
+             FROM `contents` 
+             WHERE `id` = %s 
+             AND `is_delete` = 0; """
+    cursor = g.db.cursor()
+    cursor.execute(sql, (post_id))
+    contents = [dict(title=con[0], content=con[1], 
+                    column_id=con[2], time=con[3]) 
+               for con in cursor.fetchall() ][0]
+    
+    sql_parent_id = """SELECT `parent_id` 
+                       FROM `columns` 
+                       WHERE `id` = %s;"""
+    cursor.execute(sql_parent_id,(contents["column_id"],))
+    parent_id = cursor.fetchall()[0][0]
+
+
+    sql_search_cur_big = """SELECT `id`, `title` 
+                            FROM `columns` 
+                            WHERE `id` = %s 
+                            AND `is_delete` = 0;"""
+    cursor.execute(sql_search_cur_big, (parent_id,))
+    cur_big=dict()
+    result = cursor.fetchall()
+    cur_big["id"] = result[0][0]
+    cur_big["title"] = result[0][1]
+
+    sql_search_sub_cols = """SELECT `id`, `title` 
+                             FROM `columns` 
+                             WHERE `parent_id` = %s
+                             AND `is_delete` = 0 
+                             ORDER BY `order` ;"""
+    cursor.execute(sql_search_sub_cols,(parent_id,))
+    columns = [dict(id=column[0], title=column[1]) 
+               for column in cursor.fetchall() ]
+
+    for column in columns:
+        if column['id'] == contents["column_id"]:
+            cur_sub = column
+            break
+    return render_template("content.html", id=parent_id, columns=columns,
+                        cur_big=cur_big, cur_sub=cur_sub, contents=contents )
 
 @app.route('/apply/report_outter')
 def report_outter():
