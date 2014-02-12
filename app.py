@@ -223,7 +223,7 @@ def report_outter():
                              linkman,  phone, note ))
         g.db.commit()
         return redirect(url_for("report_outter"))
-    return render_template("report-basic.html", report_outter="now")
+    return render_template("report-outter.html", report_outter="now")
 
 ##############################################
 #
