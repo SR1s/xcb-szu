@@ -198,8 +198,31 @@ def content(post_id):
     return render_template("content.html", id=parent_id, columns=columns,
                         cur_big=cur_big, cur_sub=cur_sub, contents=contents )
 
-@app.route('/apply/report_outter')
+@app.route('/apply/report_outter', methods=['POST','GET'])
 def report_outter():
+    if request.method == "POST" :
+        sql = """INSERT INTO `report-outer` 
+                 (`content`,  `units`,  `leaders`, 
+                  `sections`, `date`,   `place`, 
+                  `linkman`,  `phone`,  `note`) 
+                 VALUES ( %s, %s, %s, 
+                          %s, %s, %s, 
+                          %s, %s, %s ); """
+        cursor   = g.db.cursor()
+        content  = request.form['content']
+        units    = request.form['units']
+        leaders  = request.form['leaders']
+        sections = request.form['sections']
+        date     = request.form['date']
+        place    = request.form['place']
+        linkman  = request.form['linkman']
+        phone    = request.form['phone']
+        note     = request.form.get('note', default=" ")
+        cursor.execute(sql, (content,  units, leaders,
+                             sections, date,  place, 
+                             linkman,  phone, note ))
+        g.db.commit()
+        return redirect(url_for("report_outter"))
     return render_template("report-basic.html", report_outter="now")
 
 ##############################################
