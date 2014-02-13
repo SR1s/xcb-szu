@@ -225,6 +225,25 @@ def report_outter():
         return redirect(url_for("report_outter"))
     return render_template("report-outter.html", report_outter="now")
 
+@app.route('/apply/report_outter/<int:post_id>')
+def report_outter_status(post_id):
+    sql = """SELECT `id`, `content`, `date`, `linkman`, `status`
+             FROM `report-outer` 
+             WHERE `id` = %s 
+             AND `is_delete` = 0 ;"""
+    cursor = g.db.cursor()
+    cursor.execute(sql, post_id)
+    repo = dict()
+    result = cursor.fetchall()
+    repo['id']      = result[0][0]
+    repo['content'] = result[0][1]
+    repo['date']    = result[0][2]
+    repo['linkman'] = result[0][3]
+    repo['status']  = result[0][4]
+    return render_template("report-status.html", report_outter="now", 
+                           repo=repo)
+
+
 ##############################################
 #
 #
