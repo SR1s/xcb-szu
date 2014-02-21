@@ -79,11 +79,13 @@
                             <a class="btn" data-edit="redo" title="Redo (Ctrl/Cmd+Y)"><i class="icon-repeat"></i></a>
                         </div>-->
                     </div>
-                    <input name="content" id="content" type="hidden" />
+                    <div style="display:none">
+                        <textarea name="content" id="content" ></textarea>
+                    </div>
                     <div id="editor">{% if content is defined %}{{ content.content|safe }}{% endif %}</div>
                     <div class="padding-light" id="add-content-button">
                         <a class="half-width btn" href="/admin/content">返回管理页面</a>
-                        <button class="half-width btn btn-primary" onclick="$('#content').val($('#editor').html())">提交文章</button>
+                        <button class="half-width btn btn-primary" onclick="$('#content').html($('#editor').html())">提交文章</button>
                     </div>
                 </div>
             </div>

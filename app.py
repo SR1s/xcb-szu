@@ -222,26 +222,83 @@ def report_outter():
                              sections, date,  place, 
                              linkman,  phone, note ))
         g.db.commit()
-        return redirect(url_for("report_outter"))
+        return redirect(url_for("report_outter_status"))
     return render_template("report-outter.html", report_outter="now")
 
-@app.route('/apply/report_outter/<int:post_id>')
-def report_outter_status(post_id):
-    sql = """SELECT `id`, `content`, `date`, `linkman`, `status`
+@app.route('/apply/report_inner', methods=['POST','GET'])
+def report_inner():
+    if request.method == "POST" :
+        sql = """INSERT INTO `report-inner` 
+                 (`content`,  `units`,  `leaders`, 
+                  `sections`, `date`,   `place`, 
+                  `linkman`,  `phone`,  `note`) 
+                 VALUES ( %s, %s, %s, 
+                          %s, %s, %s, 
+                          %s, %s, %s ); """
+        cursor   = g.db.cursor()
+        content  = request.form['content']
+        units    = request.form['units']
+        leaders  = request.form['leaders']
+        sections = request.form['sections']
+        date     = request.form['date']
+        place    = request.form['place']
+        linkman  = request.form['linkman']
+        phone    = request.form['phone']
+        note     = request.form.get('note', default=" ")
+        cursor.execute(sql, (content,  units, leaders,
+                             sections, date,  place, 
+                             linkman,  phone, note ))
+        g.db.commit()
+        return redirect(url_for("report_inner_status"))
+    return render_template("report-inner.html", report_inner="now")
+
+@app.route('/apply/report_outter/status')
+def report_outter_status():
+    sql = """SELECT `id`, `content`, `date`, 
+                    `linkman`, `status`, `time`
              FROM `report-outer` 
-             WHERE `id` = %s 
-             AND `is_delete` = 0 ;"""
+             WHERE `is_delete` = 0 ;"""
     cursor = g.db.cursor()
-    cursor.execute(sql, post_id)
-    repo = dict()
-    result = cursor.fetchall()
-    repo['id']      = result[0][0]
-    repo['content'] = result[0][1]
-    repo['date']    = result[0][2]
-    repo['linkman'] = result[0][3]
-    repo['status']  = result[0][4]
-    return render_template("report-status.html", report_outter="now", 
-                           repo=repo)
+    cursor.execute(sql)
+    status_map = dict()
+    status_map[-1] = "申请不通过"
+    status_map[0 ] = "申请中" 
+    status_map[1 ] = "申请通过"
+    status = [dict(id=statu[0],   content=statu[1], 
+                   date=statu[2], linkman=statu[2], 
+                   status=status_map[statu[4]], 
+                   time=statu[5] )    
+              for statu in cursor.fetchall() ]
+    return render_template("report-outter-status.html", report_outter="now", 
+                           status=status)
+
+@app.route('/apply/propaganda')
+def propaganda():
+    return render_template("propaganda.html", propaganda="now")
+
+@app.route('/apply/contribute')
+def contribute():
+    return render_template("contribute.html", contribute="now")
+
+@app.route('/apply/report_inner/status')
+def report_inner_status():
+    sql = """SELECT `id`, `content`, `date`, 
+                    `linkman`, `status`, `time`
+             FROM `report-inner` 
+             WHERE `is_delete` = 0 ;"""
+    cursor = g.db.cursor()
+    cursor.execute(sql)
+    status_map = dict()
+    status_map[-1] = "申请不通过"
+    status_map[0 ] = "申请中" 
+    status_map[1 ] = "申请通过"
+    status = [dict(id=statu[0],   content=statu[1], 
+                   date=statu[2], linkman=statu[2], 
+                   status=status_map[statu[4]], 
+                   time=statu[5] )    
+              for statu in cursor.fetchall() ]
+    return render_template("report-inner-status.html", report_inner="now", 
+                           status=status)
 
 
 ##############################################
@@ -558,9 +615,141 @@ def admin_content_del(post_id):
 #
 ###############################
 
+@app.route('/admin/form/report-outter')
+def admin_report_outter():
+    sql = """SELECT `id`, `content`, `date`, 
+                    `linkman`, `time`
+             FROM `report-outer` 
+             WHERE `is_delete` = 0 
+             AND `status` = 0;"""
+    cursor = g.db.cursor()
+    cursor.execute(sql)
+    status_map = dict()
+    status_map[-1] = "申请不通过"
+    status_map[0 ] = "申请中" 
+    status_map[1 ] = "申请通过"
+    status = [dict(id=statu[0],   content=statu[1], 
+                   date=statu[2], linkman=statu[2], 
+                   time=statu[4] )    
+              for statu in cursor.fetchall() ]
+    return render_template("/admin/report-outter.html", 
+                           status=status)
+
+@app.route('/admin/form/report-inner')
+def admin_report_inner():
+    sql = """SELECT `id`, `content`, `date`, 
+                    `linkman`, `time`
+             FROM `report-inner` 
+             WHERE `is_delete` = 0 
+             AND `status` = 0;"""
+    cursor = g.db.cursor()
+    cursor.execute(sql)
+    status_map = dict()
+    status_map[-1] = "申请不通过"
+    status_map[0 ] = "申请中" 
+    status_map[1 ] = "申请通过"
+    status = [dict(id=statu[0],   content=statu[1], 
+                   date=statu[2], linkman=statu[2], 
+                   time=statu[4] )    
+              for statu in cursor.fetchall() ]
+    return render_template("/admin/report-inner.html",
+                           report_inner="now",
+                           status=status)
+
+@app.route("/admin/form/report-outter-pass/<int:post_id>")
+def admin_report_outter_pass(post_id):
+    sql = """UPDATE `report-outer` 
+             SET `status` = 1 
+             WHERE `id` = %s; """
+    cursor = g.db.cursor()
+    cursor.execute(sql, (post_id,))
+    g.db.commit()
+    return redirect(url_for("admin_report_outter"))
+
+@app.route("/admin/form/report-inner-pass/<int:post_id>")
+def admin_report_inner_pass(post_id):
+    sql = """UPDATE `report-inner` 
+             SET `status` = 1 
+             WHERE `id` = %s; """
+    cursor = g.db.cursor()
+    cursor.execute(sql, (post_id,))
+    g.db.commit()
+    return redirect(url_for("admin_report_inner"))
+
+@app.route("/admin/form/report-outter-unpass/<int:post_id>")
+def admin_report_outter_pass(post_id):
+    sql = """UPDATE `report-outer` 
+             SET `status` = -1 
+             WHERE `id` = %s; """
+    cursor = g.db.cursor()
+    cursor.execute(sql, (post_id,))
+    g.db.commit()
+    return redirect(url_for("admin_report_outter"))
+
+@app.route("/admin/form/report-inner-unpass/<int:post_id>")
+def admin_report_inner_pass(post_id):
+    sql = """UPDATE `report-inner` 
+             SET `status` = -1 
+             WHERE `id` = %s; """
+    cursor = g.db.cursor()
+    cursor.execute(sql, (post_id,))
+    g.db.commit()
+    return redirect(url_for("admin_report_inner"))
+
+@app.route("/admin/form/report-inner-detail/<int:post_id>")
+def admin_report_inner_detail(post_id):
+    sql = """SELECT `content`,  `units`,  `leaders`, 
+                    `sections`, `date`,   `place`, 
+                    `linkman`,  `phone`,  `note` 
+             FROM `report-inner` 
+             WHERE `is_delete` = 0 
+             AND `id` = %s ; """
+    cursor = g.db.cursor()
+    cursor.execute(sql, (post_id,))
+    result = cursor.fetchall()[0]
+    statu = dict()
+    statu['content']  = result[0]
+    statu['units']    = result[1]
+    statu['leaders']  = result[2]
+    statu['sections'] = result[3]
+    statu['date']     = result[4]
+    statu['place']    = result[5]
+    statu['linkman']  = result[6]
+    statu['phone']    = result[7]
+    statu['note']     = result[8]
+    return render_template("report-inner-detail.html",
+                            report_inner="now", 
+                            statu = statu)
+
+
+@app.route("/admin/form/report-outter-detail/<int:post_id>")
+def admin_report_outter_detail(post_id):
+    sql = """SELECT `content`,  `units`,  `leaders`, 
+                    `sections`, `date`,   `place`, 
+                    `linkman`,  `phone`,  `note` 
+             FROM `report-outer` 
+             WHERE `is_delete` = 0 
+             AND `id` = %s ; """
+    cursor = g.db.cursor()
+    cursor.execute(sql, (post_id,))
+    result = cursor.fetchall()[0]
+    statu = dict()
+    statu['content']  = result[0]
+    statu['units']    = result[1]
+    statu['leaders']  = result[2]
+    statu['sections'] = result[3]
+    statu['date']     = result[4]
+    statu['place']    = result[5]
+    statu['linkman']  = result[6]
+    statu['phone']    = result[7]
+    statu['note']     = result[8]
+    return render_template("report-outter-detail.html",
+                            report_outter="now", 
+                            statu = statu)
+
 @app.route('/admin/form')
 def admin_index():
     return render_template("admin/basic.html", form="active")
 
 if "__main__" == __name__ :
-    app.run()
+    app.run(host="0.0.0.0")
